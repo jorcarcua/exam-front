@@ -1,0 +1,39 @@
+User
+    id
+    login
+    password
+    [Exams]
+
+
+Results
+    User
+        [Exams]
+            [Questions] 
+                        id
+                        correct (count)
+                        incorrect (count)
+    
+    
+
+Result
+    User  
+    Exam  
+    Question  
+             id
+             correct (count)
+             incorrect (count)
+             
+    
+
+Exam
+    id
+    [Questions]
+
+
+Question
+    Subject
+    Title
+    [Answers: text, correct]
+
+
+

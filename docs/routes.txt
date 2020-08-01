@@ -1,0 +1,80 @@
+Funcionalidades:
+1. login
+2. Usuario se Registra
+3. Usuario ve listado de examenes con estadisticas con permiso lectura/edicion/admin
+4. Usuario ve siguiente pregunta
+5. Usuario crea/edita/borra examen si tiene permiso edicion/admin
+6. Listado de preguntas de un examen con buscador (para poder editarlas)
+7. Usuario crea/edita/borra pregunta dentro de examen al que tiene permiso edicion/admin
+8. Reset estadisticas
+
+
+Authentication:
+    POST /v1/users/login
+Registration
+    POST /v1/users/
+Get Current user
+    GET /v1/user
+Update user
+    PUT /v1/user
+
+Exams
+    GET    /v1/exams  (del usuario logado)
+    GET    /v1/exam/:id
+    POST   /v1/exams (create)
+    PUT    /v1/exam/:id
+    DELETE /v1/exam/:id
+
+Questions
+    GET /v1/exam/:id/question (Next Question con resultados de usuario logado)
+                               (La pregunta viene con estadisticas de resultado)
+    GET /v1/exam/:id/questions (posibilidad de meter parámetros de busqueda con ?)   
+                               (paginado con limit, offset, la respuesta tiene hasmore)    
+                               (ordenar con ?sort=)    
+    GET /v1/question/:id  (trae estadisticas)
+    POST /v1/questions (create) 
+    PUT /v1/question/:id
+    DELETE /v1/question/:id
+
+
+ 
+
+
+
+JSON:
+
+User:
+    {
+      "id": ,
+      "object": "user",
+      "username": ,
+      "email":
+      "password":  
+      "exams":[]
+    }
+ 
+
+Exam - questions (parametro expand questions) (opcion de paginar questions)
+ {
+         "user":,
+         "name":,
+         "totalQuestions":,
+         "totalCorrect":,
+         "totalIncorrect":
+         questions: [
+             {
+                 "subject":,
+                 "question":,
+                 answers:[
+                     {
+                         "text":,
+                         "correct":
+                     }
+                 ]
+                 "correct":
+                 "incorrect":
+             },
+             {},
+             {}
+         ] 
+ }

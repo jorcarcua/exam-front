@@ -1,103 +1,265 @@
-import _exams from './exams.json'
-import _nextQuestion from './nextQuestion.json'
-import _questions_exam from './questions-exam.json'
-import { RECEIVE_EXAMS } from '../../constants/actionTypes'
-import NextQuestion from '../../containers/NextQuestion'
+import auth from '../auth'
 
-const TIMEOUT = 100
+const BASE_URL = 'http://localhost:3001/v1/'
 
-function generateUID () {
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-  }
 
-const _getExams = () => {
-  return new Promise((res, rej) => {
-    setTimeout(() => res(_exams), TIMEOUT)
-    })
+const getToken = () =>{
+   //return 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1ZjE4NWYwNTA0NDc5MTUzMGViZjZjNDIiLCJleHAiOjE1OTY0NjY0NDM0NTcsInVzZXJuYW1lIjoidXNlcjgifQ.MNSOtb_o5SA4iYcb3rRXWNINvjWgpVT8xJDeKi_BWXA'
+   console.log('el token almacenado es')
+   console.log(auth.getToken())
+  return auth.getToken()
+}    
+
+const _getExams = async () => { 
+    const token = getToken()
+
+    const options = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const url = `${BASE_URL}/exams/`;
+    const response = await fetch(url , options); 
+
+    if(response.ok){ 
+        const exams = await response.json(); 
+        return exams
+    } else {
+        const error = await response.json();
+       throw new Error(error.message)
+    }
+    
+}
+
+const _addExam = async (exam) => {
+    const token = getToken()
+
+    const options = {
+        method: 'POST',
+        headers: { 
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(exam)
+    }
+
+    const url = `${BASE_URL}exams`;
   
+    const response = await fetch(url , options); 
+
+    if(response.ok){  
+        const examCreated = await response.json();
+        return examCreated
+    } else { 
+       const error = await response.json();
+       throw new Error(error.message)
+    }
 }
 
-const _getNextQuestion = () => {
-    return new Promise((res, rej) => {
-        setTimeout(() => res(_nextQuestion), TIMEOUT)
-        })
+const _editExam = async (exam, id) => {
+    const token = getToken()
+
+    const options = { 
+        method: 'PUT',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(exam)
+    }
+
+    const url = `${BASE_URL}exams/${id}`;
+  
+    const response = await fetch(url , options); 
+
+    if(response.ok){  
+        const examUpdated = await response.json();
+        return examUpdated
+    } else {
+        const error = await response.json();
+        throw new Error(error.message)
+    }
 }
 
-const _getQuestionsExam = (id) => {
-    return new Promise((res, rej) => { 
-        setTimeout(() => res(_questions_exam), TIMEOUT)
-        })
+const _deleteExam = async (id) => {
+    const token = getToken()
+
+    const options = {
+        method: 'DELETE',
+        headers: { 
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const url = `${BASE_URL}exams/${id}`;
+    console.log(url)
+  
+    const response = await fetch(url , options); 
+
+    if(response.ok){   
+        const deletedQuestion = await response.json(); 
+        return deletedQuestion
+    } else {
+        const error = await response.json();
+         throw new Error(error.message)
+    }
 }
 
-const _deleteExam = (id) => {
-    return new Promise((res,req) => {
-        setTimeout(() => { 
-            res(`registro con id  ${id}  borrado correctamente`)
-        }, TIMEOUT)
-    })
+
+const _getQuestionsExam = async (examId) => {
+    const token = getToken()
+
+    const options = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const url = `${BASE_URL}exams/${examId}/questions`;
+  
+    const response = await fetch(url , options); 
+
+    if(response.ok){ 
+        console.log(examId)
+        console.log(response)
+        const questions = await response.json();
+        return questions
+    } else {
+        const error = await response.json();
+        throw new Error(error.message)
+    }
 }
 
-const _addExam = (exam) => {
-    const newExam = {...exam,id:generateUID()}
-    console.log('en el server')
-    console.log(newExam)
-    return new Promise((res,req) => {
-        setTimeout(() => {
-            res(newExam)
-        }, TIMEOUT)
-    })
+const _addQuestion = async (question) => {
+    const token = getToken()
+
+    const options = { 
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(question) 
+    }
+    console.log(options.body)
+    const url = `${BASE_URL}exams/${question.exam}/questions`;
+  
+    const response = await fetch(url , options); 
+
+    if(response.ok){  
+        const questionCreated = await response.json();
+        return questionCreated
+    } else {
+       const error = await response.json();
+       throw new Error(error.message)
+    }
 }
 
-const _editExam = (exam) => {
-    return new Promise((res, req) => {
-        setTimeout(() => {
-            res(exam)
-        }, TIMEOUT)
-    })
+const _editQuestion = async (question, id) => {
+    const token = getToken()
+
+    const options = { 
+        method: 'PUT',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(question)
+    }
+
+    const url = `${BASE_URL}questions/${id}`;
+  
+    const response = await fetch(url , options); 
+
+    if(response.ok){  
+        const questionUpdated = await response.json();
+        return questionUpdated
+    } else {
+        const error = await response.json();
+        throw new Error(error.message)
+    }
 }
 
-const _editQuestion = (question) => {
-    return new Promise((res, req) => {
-        setTimeout(() => {
-            res(question)
-        }, TIMEOUT)
-    })
+
+const _deleteQuestion = async (id) => {
+    console.log(id) 
+    const token = getToken()
+
+    const options = {
+        method: 'DELETE',
+        headers: { 
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const url = `${BASE_URL}questions/${id}`; 
+  
+    const response = await fetch(url , options); 
+
+    if(response.ok){  
+        console.log('la respuesta ha sido ok')   
+        const deletedQuestion = await response.json();
+        console.log(deletedQuestion) 
+        return deletedQuestion
+    } else {
+        const error = await response.json();
+        throw new Error(error.message)
+    }
 }
 
-const _addQuestion = (question) => {
-    console.log('llega al server con estos parametrs:')
-    console.log(question) 
-    return new Promise((res, req) => {
-        setTimeout(() => {
-            res(question)
-        }, TIMEOUT)
-    })
+const _randomQuestion = async (examId) => {
+    const token = getToken()
+
+    const options = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const url = `${BASE_URL}/exams/${examId}/questions/random`;
+    const response = await fetch(url , options); 
+
+    if(response.ok){ 
+        const question = await response.json();
+        return question
+    } else {
+       const error = await response.json();
+       throw new Error(error.message)
+    }
 }
 
-const _deleteQuestion = (id) => {
-    console.log(`message from server: delete question con id ${id}`)
+const _authenticate = async (user) => {
+   
+    console.log(user)
+    
+    const options = { 
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user) 
+    }
+   
+    const url = `${BASE_URL}user/login`;
+  
+    const response = await fetch(url , options); 
 
-    return new Promise((res,rej) => {
-        setTimeout( () => {
-           res('Question deleted')
-        }, 10000)
-    })
+    if(response.ok){  
+        const res = await response.json();  
+        return res.data.token
+    } else {
+       const error = await response.json();
+       console.log('error en el server')
+       console.log(error)
+       throw new Error(error.message)
+    }
 }
 
-const _randomQuestion = () => {
-    const index = Math.floor(Math.random() * 2);  
-    console.log(`el random es ${index}`)
-    console.log(_questions_exam[index] )
-    return new Promise((res, rej) => {
-      //  setTimeout(() => res(_nextQuestion ), TIMEOUT)
-      setTimeout(() => res(_questions_exam[index] ), TIMEOUT)
-      
-        })  
-}
 
-export default {
+export default  {
     _getExams,
-    _nextQuestion,
+    _randomQuestion,
     _getQuestionsExam,
     _deleteExam,
     _addExam,
@@ -105,5 +267,5 @@ export default {
     _editQuestion,
     _addQuestion,
     _deleteQuestion,
-    _randomQuestion
+    _authenticate
 }

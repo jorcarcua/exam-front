@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getNextQuestion } from '../actions'
+import { questionActions } from '../../actions'
 import { Link, Redirect } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
-class NextQuestion extends Component { 
+const {getNextQuestion} = questionActions
+
+class QuestionNextContainer extends Component { 
 
      
     componentWillMount() {
@@ -11,12 +14,17 @@ class NextQuestion extends Component {
     }
 
    componentDidMount(){ 
-     const {dispatch} = this.props
-    dispatch(getNextQuestion())
+     const {dispatch, match} = this.props 
+     dispatch(getNextQuestion(match.params.examId))
      
    }
   
    checkAnswer = (e) => {
+       e.preventDefault()
+       if(!this.state.selected){
+           alert('You must select an answer')
+         return null
+       }
        e.preventDefault() 
        const answers = this.props.question.answers
        let success = false 
@@ -33,6 +41,7 @@ class NextQuestion extends Component {
 
    onChange = (id, e) => {  
     this.setState({selected: id})
+    
    }
 
    getInitialState = () => {
@@ -45,15 +54,30 @@ class NextQuestion extends Component {
 
    refreshState  = () => { 
        this.setState(this.getInitialState())
-       const {dispatch} = this.props
-       dispatch(getNextQuestion())
+       const {dispatch, match} = this.props
+       dispatch(getNextQuestion(match.params.examId))
    }
 
-   render () {   
-       const {question} = this.props
-       const {showResult} = this.state 
+   render () {    
+       const {question, errorMessage} = this.props 
+       const {showResult} = this.state   
+       console.log(question)
+       if(!question.text){  
+           return (
+           <div>
+                 <p>There are no questions for this exams</p>
+                 <Link class="btn btn-primary mr-1 mt-3" to={'/'}>Back</Link> 
+                                     
+
+           </div>
+         
+            )
+       } 
+       console.log('pasa del no question')
         return (
+           
             <div>
+                 <p style={{ color: 'red' }}>{errorMessage}</p> 
                  <h3>Next Question</h3>
                     <p>{question.text}</p> 
                    
@@ -72,11 +96,15 @@ class NextQuestion extends Component {
                                 {showResult ? (
                                     <div>
                                         <p>{this.state.message}</p> 
-                                        <Link to='/nextQuestion' onClick={this.refreshState}>Next Question</Link> 
+                                      
+                                        <Link class="btn btn-primary mr-1 mt-3" to={`/questionNext/${question.exam}`} onClick={this.refreshState}>Next Question</Link> 
 
                                     </div>
                                     ) : (
-                                        <button type="submit">Send</button>  
+                                        <div>
+                                        <button class="btn btn-primary mr-1 mt-3" type="submit">Send</button>  
+                                        <Link class="btn btn-primary mr-1 mt-3" to={'/'}>Exit</Link> 
+                                        </div>
                               
                                 )} 
                         </form> 
@@ -90,8 +118,9 @@ class NextQuestion extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    question : state.nextQuestion
+    question : state.nextQuestion,
+    errorMessage: state.errorMessage
  })
  
 
-export default connect(mapStateToProps)(NextQuestion)
+export default withRouter(connect(mapStateToProps)(QuestionNextContainer))

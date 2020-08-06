@@ -6,24 +6,21 @@ const questions = (state = [], action ) => {
         case types.RECEIVE_QUESTIONS:
             return action.questions
         
-        case types.EDIT_QUESTION:
-            return state.map( question => question.id==action.question.id ? action.question : question )
+        case types.EDIT_QUESTION: 
+            return state.map( question => question._id!==action.question._id ? question : action.question )
       
         case types.ADD_QUESTION: 
             return [...state, action.question]
         
-        case types.DELETE_QUESTION:
-            console.log('llega al reducer')
-            return state.filter( question => question.id!=action.id)
+        case types.DELETE_QUESTION:   
+            return state.filter( question => question._id!==action.id)
         default:
             return state
     }
 }
 
 export const getQuestionById = (id,state) => { 
-    const result =  state.questions.find( question => question.id==id)
-    console.log(state.questions)
-    console.log(result)
+    const result =  state.questions.find( question => question._id==id) 
     return result
 }
 

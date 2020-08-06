@@ -18,6 +18,7 @@ const ExamList = ({ exams, onEdit, onDelete }) => (
         <th>Edit</th>
         <th>Delete</th>
         <th>Add Question</th>
+        <th>Start Exam</th>
       </tr>
     </thead>
     <tbody>
@@ -27,7 +28,7 @@ const ExamList = ({ exams, onEdit, onDelete }) => (
        <ExamDetail 
        exam = {exam}
        onEdit = {onEdit}
-       onDelete = {() => onDelete(exam.id)}
+       onDelete = {() => onDelete(exam._id)}
        key = {exam.id}
        />
       

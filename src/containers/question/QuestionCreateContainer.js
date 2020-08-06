@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {handleAddQuestion} from '../actions'
+import { questionActions } from '../../actions'
 import { withRouter } from 'react-router-dom'
-import AnswersInput from '../components/AnswerInputs'
+import  {AnswerInputs} from '../../components'
 
-class NewQuestion extends Component {
+const {handleAddQuestion} = questionActions
+
+class QuestionCreateContainer extends Component {
 
     state = {
         question:{
@@ -44,12 +46,8 @@ class NewQuestion extends Component {
         const examId = match.params.examId 
         
         
-        dispatch(handleAddQuestion({...question, examId:examId}))
-
-        
-
-       // history.push(`/listQuestions/${examId}`)
-       history.push('/')
+        dispatch(handleAddQuestion({...question, exam:examId}, history))
+ 
        
     }
 
@@ -63,9 +61,13 @@ class NewQuestion extends Component {
 
     render () {
         const {question} = this.state
-        const {history} = this.props
+        const {history, errorMessage} = this.props 
+        console.log(`errorMessage es ${errorMessage}`)
         return (
+           
             <div>
+                <p style={{ color: 'red' }}>{errorMessage}</p>
+             
                 <form onSubmit={this.onSubmit} onChange={this.onChange}>
                     <label>Title</label>
                     <textarea  
@@ -82,7 +84,7 @@ class NewQuestion extends Component {
                     </div>
                     
                     <div>
-                       <AnswersInput answers={question.answers}/> 
+                       <AnswerInputs answers={question.answers}/> 
                     </div>
                     <br></br>
                     <div>
@@ -99,4 +101,8 @@ class NewQuestion extends Component {
     }
 }
 
-export default withRouter(connect()(NewQuestion))
+const mapStateToProps = (state) => ({
+    errorMessage: state.errorMessage
+})
+
+export default withRouter(connect(mapStateToProps)(QuestionCreateContainer))

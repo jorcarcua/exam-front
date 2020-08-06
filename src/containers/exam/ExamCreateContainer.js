@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {handleAddExam} from '../actions'
+import { examActions } from '../../actions'
 import { withRouter } from 'react-router-dom'
 
-class NewExam extends Component {
+class  ExamCreateContainer extends Component {
 
     state = {
         title:''
@@ -20,29 +20,25 @@ class NewExam extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault()
-         
+        const { handleAddExam } = examActions
         const { title } = this.state
-        const {dispatch, id, history} = this.props
+        const { dispatch, id, history } = this.props
         const exam = {
             id,
             title
         }
-        
-        dispatch(handleAddExam(exam))
 
-        this.setState({
-             title: ''
-        })
+        dispatch(handleAddExam(exam, history))
 
-        history.push('/')
-       
+
     }
 
-    render () {
+    render () { 
         const {title} = this.state
-        const {history} = this.props
+        const {errorMessage, history} = this.props
         return (
             <div>
+                 <p style={{ color: 'red' }}>{errorMessage}</p>
                 <form onSubmit={this.handleSubmit}>
                     <textarea 
                         onChange={this.handleChange}
@@ -53,12 +49,14 @@ class NewExam extends Component {
                     
                     <button type="submit">Save</button>
                     <button onClick={history.goBack}>Back</button>
-                </form>
-                
-
+                </form> 
             </div>
         )
     }
 }
 
-export default withRouter(connect()(NewExam))
+const mapStateToProps = (state) => ({
+    errorMessage: state.errorMessage
+})
+
+export default withRouter(connect(mapStateToProps)(ExamCreateContainer))

@@ -1,23 +1,25 @@
 import exams, * as fromExams from './exams'
 import questions from './questions'
+import loading from './loading'
+import user from './user'
 import nextQuestion from './nextQuestion'
 import * as types from '../constants/actionTypes'
 import { combineReducers } from 'redux'
 
+ 
+const errorMessage = (state = null, action) => {
+    const { type, error} = action
 
-const loading = (state=false,action) => {
-    switch (action.type) { 
-        case types.START_LOADING:
-            return true
-        
-         case types.END_LOADING:
-            return false
-        default:
-            return state
-    }
+    if(type === types.RESET_ERROR_MESSAGE){
+        return null
+    } else if (error) {
+        return error
+    } 
+    
+    return state
 }
 
-const reducer = combineReducers({exams, questions,loading, nextQuestion}) 
+const reducer = combineReducers({exams, questions,loading, user, nextQuestion, errorMessage}) 
 
 export default reducer
 

@@ -6,7 +6,7 @@ const initialState = {
 }
  
 
-const nextQuestion =  (state = initialState, action) => { 
+const nextQuestion =  (state = {}, action) => { 
     switch(action.type) {  
         case types.RANDOM_QUESTION:
             return action.question

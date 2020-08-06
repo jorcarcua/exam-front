@@ -5,16 +5,14 @@ import * as types from '../constants/actionTypes'
 const exams =  (state = [], action) => { 
     switch(action.type) {  
         case types.ADD_EXAM:
-            console.log('info del reducer')
-            console.log(action.exam)
             return [...state, action.exam]
 
-        case types.UPDATE_EXAM:
-            return state.map((exam)=> exam.id !== action.id ? exam : action.exam)
+        case types.EDIT_EXAM:
+            return state.map((exam)=> exam._id !== action.exam._id ? exam : action.exam)
 
         case types.DELETE_EXAM: 
             console.log(action.id)
-            return state.filter((exam)=>exam.id!==action.id)
+            return state.filter((exam)=>exam._id!==action.id)
 
         case types.GET_EXAMS:
             return action.exams
@@ -30,6 +28,7 @@ const exams =  (state = [], action) => {
 export default exams
 
 export const getExamById = (state,id) =>  { 
-    return state.exams[id]
+    const result =  state.exams.find( exam => exam._id==id) 
+    return result
 }
  

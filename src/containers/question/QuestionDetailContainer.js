@@ -1,15 +1,21 @@
 import React from 'react'
-import  { getQuestionById } from '../reducers/questions'
+import  { getQuestionById } from '../../reducers/questions'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
-import { handleDeleteQuestion } from '../actions/'
+import { questionActions } from '../../actions'
 
+const { handleDeleteQuestion } = questionActions
 
-const QuestionDetail = ({loading,question, history, dispatch}) => {
-if(!loading){
+const QuestionDetailContainer = ({loading,question, history, dispatch, errorMessage}) => {
+
+if(!question){
+    return null
+}
+    
+if(!loading){ 
 return (
-    <div  > 
-          
+    <div> 
+        <p style={{ color: 'red' }}>{errorMessage}</p>  
         <h1 class="mb-5">Question detail</h1> 
        
         <div class="row"> 
@@ -26,7 +32,7 @@ return (
         </div>
         </div>
          
-        <Link class="btn btn-primary mr-1 mt-3" to={`/questionEdit/${question.id}`}>Edit</Link> 
+        <Link class="btn btn-primary mr-1 mt-3" to={`/questionEdit/${question._id}`}>Edit</Link> 
         <button class="btn btn-primary mr-1 mt-3" onClick={() => onDelete(question, history, dispatch) }>Delete</button>
         <button class="btn btn-primary mt-3" onClick={history.goBack}>Back</button>
         
@@ -38,18 +44,16 @@ return (
      return( <h3>Loading</h3>)
  }
 }
-const  onDelete =   async (question, history, dispatch) => {
-    console.log('estamos en onDelete')
-     await dispatch(handleDeleteQuestion(question.id))
-     console.log('pasa el dispatch')
-     history.push(`/listQuestions/${question.examId}`)
+const  onDelete =   async (question, history, dispatch) => { 
+     await dispatch(handleDeleteQuestion(question._id, history)) 
 }
 
 const mapStateToProps = (state, {match}) => ({
     question : getQuestionById(match.params.questionId, state),
-    loading: state.loading
+    loading: state.loading,
+    errorMessage: state.errorMessage
 })
 
-export default withRouter(connect(mapStateToProps)(QuestionDetail))
+export default withRouter(connect(mapStateToProps)(QuestionDetailContainer))
 
  

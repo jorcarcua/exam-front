@@ -17,7 +17,7 @@ const QuestionList = ({questions}) => (
               
         <tr>
             <td>  {question.text}</td>
-            <td> <Link to={`/questionDetail/${question.id}`}>View Question</Link></td>
+            <td> <Link to={`/questionDetail/${question._id}`}>View Question</Link></td>
         </tr>
          )}
     </tbody>

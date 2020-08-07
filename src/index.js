@@ -3,25 +3,19 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { createStore, applyMiddleware} from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import  thunk   from 'redux-thunk';
-import reducer from './reducers'
-import {examActions} from './actions'
+import thunk from 'redux-thunk';
+import reducer from './reducers';
 
- 
- 
-const {getExams, receiveExams} = examActions
- 
+const middleware = [thunk];
 
-const middleware = [ thunk ];
-
-const store = createStore(reducer, applyMiddleware(...middleware))
+const store = createStore(reducer, applyMiddleware(...middleware));
 
 //store.dispatch(getExams())
 
 ReactDOM.render(
-  <Provider store = {store}> 
+  <Provider store={store}>
     <App />
   </Provider>,
   document.getElementById('root')

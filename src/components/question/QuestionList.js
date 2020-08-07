@@ -1,31 +1,28 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
- 
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const QuestionList = ({questions}) => (
-    <div>
-
-<table class="table">
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th></th> 
-      </tr>
-    </thead>
-    <tbody>
-    {questions.map((question) =>  
-              
+const QuestionList = ({ questions }) => (
+  <div>
+    <table className="table">
+      <thead>
         <tr>
-            <td>  {question.text}</td>
-            <td> <Link to={`/questionDetail/${question._id}`}>View Question</Link></td>
+          <th>Title</th>
+          <th></th>
         </tr>
-         )}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {questions.map((question) => (
+          <tr key={question._id}>
+            <td> {question.text}</td>
+            <td>
+              {' '}
+              <Link to={`/questionDetail/${question._id}`}>View Question</Link>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+);
 
- 
-    </div>
-)
- 
-
-export default QuestionList
+export default QuestionList;

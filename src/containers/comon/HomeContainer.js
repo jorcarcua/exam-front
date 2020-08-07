@@ -1,23 +1,19 @@
-import React  from 'react'
-import { connect } from 'react-redux' 
-import { ExamListContainer } from '../../containers'
-import { Public } from '../../components'
- 
+import PropTypes from 'prop-types';
+import React from 'react';
+import { connect } from 'react-redux';
+import { ExamListContainer } from '../../containers';
+import { Public } from '../../components';
 
-const HomeContainer = ({user}) =>  ( 
-    <div>
-        {user ?  
-                <ExamListContainer/> 
-                : 
-                <Public/> 
-        }
-    </div> 
-)
- 
-   
-const mapStateToProps = (state) => ({ 
-  user: state.user
-})
+const HomeContainer = ({ user }) => (
+  <div>{user ? <ExamListContainer /> : <Public />}</div>
+);
 
-export default connect(mapStateToProps)(HomeContainer)
- 
+HomeContainer.propTypes = {
+  user: PropTypes.object,
+};
+
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps)(HomeContainer);

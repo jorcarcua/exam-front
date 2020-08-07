@@ -1,11 +1,9 @@
-import React  from 'react'
- 
+import React from 'react';
 
+const Logout = () => (
+  <div>
+    <p>See you soon!</p>
+  </div>
+);
 
-const LogoutComponent = () =>  (
-        <div>
-        <p>See you soon!</p>
-    </div>
-)
-
-export default LogoutComponent
+export default Logout;

@@ -1,18 +1,12 @@
-import * as types from '../constants/actionTypes'
- 
-const initialState = {
-    text: '',
-    answers: []
-}
- 
+import * as types from '../constants/actionTypes';
 
-const nextQuestion =  (state = {}, action) => { 
-    switch(action.type) {  
-        case types.RANDOM_QUESTION:
-            return action.question
-        default:
-            return state
-    }
-}
+const nextQuestion = (state = {}, action) => {
+  switch (action.type) {
+    case types.RANDOM_QUESTION:
+      return action.question;
+    default:
+      return state;
+  }
+};
 
-export default nextQuestion
+export default nextQuestion;

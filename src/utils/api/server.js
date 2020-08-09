@@ -3,9 +3,6 @@ import auth from '../auth';
 const BASE_URL = 'http://localhost:3001/v1/';
 
 const getToken = () => {
-  //return 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1ZjE4NWYwNTA0NDc5MTUzMGViZjZjNDIiLCJleHAiOjE1OTY0NjY0NDM0NTcsInVzZXJuYW1lIjoidXNlcjgifQ.MNSOtb_o5SA4iYcb3rRXWNINvjWgpVT8xJDeKi_BWXA'
-  console.log('el token almacenado es');
-  console.log(auth.getToken());
   return auth.getToken();
 };
 
@@ -91,7 +88,6 @@ const _deleteExam = async (id) => {
   };
 
   const url = `${BASE_URL}exams/${id}`;
-  console.log(url);
 
   const response = await fetch(url, options);
 
@@ -118,8 +114,6 @@ const _getQuestionsExam = async (examId) => {
   const response = await fetch(url, options);
 
   if (response.ok) {
-    console.log(examId);
-    console.log(response);
     const questions = await response.json();
     return questions;
   } else {
@@ -139,7 +133,7 @@ const _addQuestion = async (question) => {
     },
     body: JSON.stringify(question),
   };
-  console.log(options.body);
+
   const url = `${BASE_URL}exams/${question.exam}/questions`;
 
   const response = await fetch(url, options);
@@ -179,7 +173,6 @@ const _editQuestion = async (question, id) => {
 };
 
 const _deleteQuestion = async (id) => {
-  console.log(id);
   const token = getToken();
 
   const options = {
@@ -194,9 +187,7 @@ const _deleteQuestion = async (id) => {
   const response = await fetch(url, options);
 
   if (response.ok) {
-    console.log('la respuesta ha sido ok');
     const deletedQuestion = await response.json();
-    console.log(deletedQuestion);
     return deletedQuestion;
   } else {
     const error = await response.json();
@@ -226,8 +217,6 @@ const _randomQuestion = async (examId) => {
 };
 
 const _authenticate = async (user) => {
-  console.log(user);
-
   const options = {
     method: 'POST',
     headers: {
@@ -245,8 +234,6 @@ const _authenticate = async (user) => {
     return res.data.token;
   } else {
     const error = await response.json();
-    console.log('error en el server');
-    console.log(error);
     throw new Error(error.message);
   }
 };

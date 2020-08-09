@@ -1,6 +1,7 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { examActions } from '../../actions';
-import { getExamById } from '../../reducers';
+import { getExamById, getErrorMessage } from '../../reducers';
 import { connect } from 'react-redux';
 
 class ExamEditContainer extends Component {
@@ -55,9 +56,16 @@ class ExamEditContainer extends Component {
   }
 }
 
+ExamEditContainer.propTypes = {
+  exam: PropTypes.object,
+  errorMessage: PropTypes.string,
+  dispatch: PropTypes.func,
+  history: PropTypes.object,
+};
+
 const mapStateToProps = (state, { match }) => ({
   exam: getExamById(state, match.params.examId),
-  errorMessage: state.errorMessage,
+  errorMessage: getErrorMessage(state),
 });
 
 export default connect(mapStateToProps)(ExamEditContainer);

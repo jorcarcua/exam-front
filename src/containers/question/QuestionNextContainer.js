@@ -1,8 +1,10 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { questionActions } from '../../actions';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
+import { getRandomQuestion, getErrorMessage } from '../../reducers';
 
 const { getNextQuestion } = questionActions;
 
@@ -135,9 +137,16 @@ class QuestionNextContainer extends Component {
   }
 }
 
+QuestionNextContainer.propTypes = {
+  question: PropTypes.object,
+  match: PropTypes.object,
+  dispatch: PropTypes.func,
+  errorMessage: PropTypes.string,
+};
+
 const mapStateToProps = (state) => ({
-  question: state.nextQuestion,
-  errorMessage: state.errorMessage,
+  question: getRandomQuestion(state),
+  errorMessage: getErrorMessage(state),
 });
 
 export default withRouter(connect(mapStateToProps)(QuestionNextContainer));

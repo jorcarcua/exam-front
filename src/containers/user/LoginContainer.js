@@ -1,7 +1,9 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { userActions } from '../../actions';
 import { withRouter } from 'react-router-dom';
+import { getErrorMessage } from '../../reducers';
 
 class LoginContainer extends Component {
   state = {
@@ -60,8 +62,14 @@ class LoginContainer extends Component {
   }
 }
 
+LoginContainer.propTypes = {
+  errorMessage: PropTypes.string,
+  history: PropTypes.object,
+  dispatch: PropTypes.func,
+};
+
 const mapStateToProps = (state) => ({
-  errorMessage: state.errorMessage,
+  errorMessage: getErrorMessage(state),
 });
 
 export default withRouter(connect(mapStateToProps)(LoginContainer));

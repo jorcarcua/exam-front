@@ -1,18 +1,36 @@
 import * as types from '../constants/actionTypes';
 
-const user = (state = null, action) => {
-  switch (action.type) {
-    case types.LOGIN:
-      console.log('en el reducer');
-      console.log(action);
-      return action.user;
+const initialState = {
+  user: null,
+  inProgress: false,
+};
 
+const user = (state = initialState, action) => {
+  switch (action.type) {
+    case types.START_ASYNC_USER:
+      return {
+        ...state,
+        inProgress: true,
+      };
+    case types.LOGIN:
+      return {
+        ...state,
+        user: action.user,
+        inProgress: false,
+      };
     case types.LOGOUT:
-      console.log('entra en reducer logout');
-      return null;
+      return {
+        ...state,
+        user: null,
+        inProgress: false,
+      };
     default:
       return state;
   }
+};
+
+export const getUser = (state) => {
+  return state.user;
 };
 
 export default user;

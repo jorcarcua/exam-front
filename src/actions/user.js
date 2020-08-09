@@ -1,6 +1,10 @@
 export default ({ server, types, commonActions, auth }) => {
-  const { showError, resetError } = commonActions;
+  const { showError } = commonActions;
   const { setToken, clearToken } = auth;
+
+  const startAsyncUser = () => ({
+    type: types.START_ASYNC_USER,
+  });
 
   const logout = () => ({
     type: types.LOGOUT,
@@ -13,13 +17,11 @@ export default ({ server, types, commonActions, auth }) => {
 
   const authenticate = (user, history) => async (dispatch) => {
     try {
+      dispatch(startAsyncUser());
       const res = await server._authenticate(user);
       setToken(res);
       const newUser = { token: res };
-      console.log('el nuevo user');
-      console.log(newUser);
       dispatch(login(newUser));
-      dispatch(resetError());
       history.push(`/`);
     } catch (error) {
       dispatch(showError(error.message));

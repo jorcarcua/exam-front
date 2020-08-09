@@ -1,5 +1,10 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import { getQuestionById } from '../../reducers/questions';
+import {
+  getQuestionById,
+  showQuestionLoading,
+  getErrorMessage,
+} from '../../reducers';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { questionActions } from '../../actions';
@@ -62,10 +67,18 @@ const onDelete = async (question, history, dispatch) => {
   await dispatch(handleDeleteQuestion(question._id, history));
 };
 
+QuestionDetailContainer.propTypes = {
+  loading: PropTypes.bool,
+  question: PropTypes.object,
+  history: PropTypes.object,
+  dispatch: PropTypes.func,
+  errorMessage: PropTypes.string,
+};
+
 const mapStateToProps = (state, { match }) => ({
   question: getQuestionById(match.params.questionId, state),
-  loading: state.loading,
-  errorMessage: state.errorMessage,
+  loading: showQuestionLoading(state),
+  errorMessage: getErrorMessage(state),
 });
 
 export default withRouter(connect(mapStateToProps)(QuestionDetailContainer));

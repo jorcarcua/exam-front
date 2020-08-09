@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import ExamDetail from './ExamDetail';
 import React from 'react';
 import { Error, Loading } from '../../components';
@@ -39,5 +40,13 @@ const ExamList = ({ exams, errorMessage, loading, onEdit, onDelete }) => (
     )}
   </div>
 );
+
+ExamList.propTypes = {
+  exams: PropTypes.array,
+  errorMessage: PropTypes.string,
+  loading: PropTypes.bool,
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func,
+};
 
 export default ExamList;

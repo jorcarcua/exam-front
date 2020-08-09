@@ -1,5 +1,9 @@
 export default ({ server, types, commonActions }) => {
-  const { showError, resetError } = commonActions;
+  const { showError } = commonActions;
+
+  const startAsyncQuestion = () => ({
+    type: types.START_ASYNC_QUESTION,
+  });
 
   const receiveQuestions = (questions) => ({
     type: types.RECEIVE_QUESTIONS,
@@ -25,17 +29,21 @@ export default ({ server, types, commonActions }) => {
     question,
   });
 
-  const getQuestions = (id) => (dispatch) => {
-    server._getQuestionsExam(id).then((questions) => {
-      dispatch(receiveQuestions(questions));
-    });
+  const getQuestions = (id) => async (dispatch) => {
+    try {
+      dispatch(startAsyncQuestion());
+      const res = await server._getQuestionsExam(id);
+      dispatch(receiveQuestions(res));
+    } catch (error) {
+      dispatch(showError(error.message));
+    }
   };
 
   const handleAddQuestion = (question, history) => async (dispatch) => {
     try {
+      dispatch(startAsyncQuestion());
       const res = await server._addQuestion(question);
       dispatch(addQuestion(res));
-      dispatch(resetError());
       history.push(`/questionList/${res.exam}`);
     } catch (error) {
       dispatch(showError(error.message));
@@ -44,9 +52,9 @@ export default ({ server, types, commonActions }) => {
 
   const handleEditQuestion = (question, id, history) => async (dispatch) => {
     try {
+      dispatch(startAsyncQuestion());
       const res = await server._editQuestion(question, id);
       dispatch(editQuestion(res));
-      dispatch(resetError());
       history.push(`/questionDetail/${id}`);
     } catch (error) {
       dispatch(showError(error.message));
@@ -55,13 +63,9 @@ export default ({ server, types, commonActions }) => {
 
   const handleDeleteQuestion = (id, history) => async (dispatch) => {
     try {
-      //   dispatch(startLoading())
+      dispatch(startAsyncQuestion());
       const res = await server._deleteQuestion(id);
-      //   dispatch(endLoading())
-      console.log('antes de delete');
       dispatch(deleteQuestion(id));
-      console.log('despues de detele');
-      dispatch(resetError());
       history.push(`/questionList/${res.exam}`);
     } catch (error) {
       dispatch(showError(error.message));
@@ -70,12 +74,10 @@ export default ({ server, types, commonActions }) => {
 
   const getNextQuestion = (examId) => async (dispatch) => {
     try {
+      dispatch(startAsyncQuestion());
       const res = await server._randomQuestion(examId);
       dispatch(getRandomQuestion(res));
-      dispatch(resetError());
     } catch (error) {
-      console.log('hay un error');
-      console.log(error.message);
       dispatch(showError(error.message));
     }
   };

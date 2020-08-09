@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { ExamList } from '../../components';
 import { examActions } from '../../actions';
+import { getExamList, getErrorMessage, showExamLoading } from '../../reducers';
 
 const { editExam, handleDeleteExam, getExams } = examActions;
 
@@ -27,7 +28,7 @@ class ExamListContainer extends Component {
 }
 
 ExamListContainer.propTypes = {
-  exams: PropTypes.object,
+  exams: PropTypes.array,
   errorMessage: PropTypes.string,
   loading: PropTypes.bool,
   handleDeleteExam: PropTypes.func,
@@ -35,9 +36,9 @@ ExamListContainer.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  exams: state.exams,
-  errorMessage: state.errorMessage,
-  loading: state.loading,
+  exams: getExamList(state),
+  errorMessage: getErrorMessage(state),
+  loading: showExamLoading(state),
 });
 
 export default connect(mapStateToProps, { handleDeleteExam, getExams })(

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { examActions } from '../../actions';
@@ -50,6 +51,13 @@ class ExamCreateContainer extends Component {
     );
   }
 }
+
+ExamCreateContainer.propTypes = {
+  id: PropTypes.string,
+  errorMessage: PropTypes.string,
+  dispatch: PropTypes.func,
+  history: PropTypes.object,
+};
 
 const mapStateToProps = (state) => ({
   errorMessage: state.errorMessage,

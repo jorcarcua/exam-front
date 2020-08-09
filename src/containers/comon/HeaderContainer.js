@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Header } from '../../components';
 import { userActions } from '../../actions';
+import { getUser } from '../../reducers';
 
 const { handleLogout } = userActions;
 
@@ -20,7 +21,7 @@ HeaderContainer.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user,
+  user: getUser(state),
 });
 
 export default connect(mapStateToProps, { handleLogout })(HeaderContainer);

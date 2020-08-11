@@ -1,56 +1,38 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { examActions } from '../../actions';
-import { getExamById, getErrorMessage } from '../../reducers';
+import { getExamById, getErrorMessage, showExamLoading } from '../../reducers';
 import { connect } from 'react-redux';
+import { Error, Loading, ExamForm } from '../../components';
+
+const { handleEditExam } = examActions;
 
 class ExamEditContainer extends Component {
-  state = {
-    exam: '',
+  editExam = (exam) => {
+    const { handleEditExam, history } = this.props;
+    handleEditExam(exam, history);
   };
 
-  componentDidMount() {
-    const { exam } = this.props;
-    this.setState(() => ({ exam }));
-  }
-
-  handleSubmit = (e) => {
-    const { handleEditExam } = examActions;
-    const { dispatch, history } = this.props;
-    e.preventDefault();
-    const newExam = { title: this.state.exam.title };
-    dispatch(handleEditExam(newExam, this.state.exam._id, history));
-  };
-
-  handleChange = (e) => {
-    const exam = this.state.exam;
-    exam.title = e.target.value;
-    this.setState(exam);
+  goBack = () => {
+    const { history } = this.props;
+    history.goBack();
   };
 
   render() {
-    const { history, errorMessage } = this.props;
+    const { errorMessage, loading, exam } = this.props;
     return (
       <div>
-        <p style={{ color: 'red' }}>{errorMessage}</p>
-        <form onSubmit={this.handleSubmit} className="text-left">
-          <div className="form-group ">
-            <label htmlFor="title">Title:</label>
-            <textarea
-              className="form-control"
-              onChange={this.handleChange}
-              value={this.state.exam.title}
-              id="title"
-            />
-          </div>
-
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
-          <button onClick={history.goBack} className="btn btn-primary">
-            Back
-          </button>
-        </form>
+        <Error message={errorMessage} />
+        {loading ? (
+          <Loading />
+        ) : (
+          <ExamForm
+            errorMessage={errorMessage}
+            exam={exam}
+            onSubmit={this.editExam}
+            onGoBack={this.goBack}
+          />
+        )}
       </div>
     );
   }
@@ -58,14 +40,16 @@ class ExamEditContainer extends Component {
 
 ExamEditContainer.propTypes = {
   exam: PropTypes.object,
+  handleEditExam: PropTypes.func,
   errorMessage: PropTypes.string,
-  dispatch: PropTypes.func,
+  loading: PropTypes.bool,
   history: PropTypes.object,
 };
 
 const mapStateToProps = (state, { match }) => ({
   exam: getExamById(state, match.params.examId),
   errorMessage: getErrorMessage(state),
+  loading: showExamLoading(state),
 });
 
-export default connect(mapStateToProps)(ExamEditContainer);
+export default connect(mapStateToProps, { handleEditExam })(ExamEditContainer);

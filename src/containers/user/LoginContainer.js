@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import { userActions } from '../../actions';
 import { withRouter } from 'react-router-dom';
 import { getErrorMessage } from '../../reducers';
+import { Error, Loading, Login } from '../../components';
+
+const { authenticate } = userActions;
 
 class LoginContainer extends Component {
   state = {
@@ -13,63 +16,34 @@ class LoginContainer extends Component {
     },
   };
 
-  handleChange = (e) => {
-    const value = e.target.value;
-    const property = e.target.name;
-
-    this.setState((prevState) => {
-      return { user: { ...prevState.user, [property]: value } };
-    });
-  };
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const { authenticate } = userActions;
-    const { dispatch, history } = this.props;
-    dispatch(authenticate(this.state.user, history));
+  handleSubmit = (user) => {
+    const { authenticate, history } = this.props;
+    authenticate(user, history);
   };
 
   render() {
-    const { user } = this.state;
-    const { errorMessage } = this.props;
+    const { errorMessage, loading } = this.props;
 
     return (
       <div>
-        <p style={{ color: 'red' }}>{errorMessage}</p>
-        <form onSubmit={this.handleSubmit}>
-          <div>
-            <label>Username</label>
-            <input
-              type="text"
-              name="username"
-              onChange={this.handleChange}
-              value={user.username}
-            />
-          </div>
-          <div>
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              onChange={this.handleChange}
-              value={user.password}
-            />
-          </div>
-          <button type="submit">Send</button>
-        </form>
+        <Error message={errorMessage} />
+        {loading ? <Loading /> : <Login onSubmit={this.handleSubmit} />}
       </div>
     );
   }
 }
 
 LoginContainer.propTypes = {
+  authenticate: PropTypes.func,
   errorMessage: PropTypes.string,
+  loading: PropTypes.bool,
   history: PropTypes.object,
-  dispatch: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
   errorMessage: getErrorMessage(state),
 });
 
-export default withRouter(connect(mapStateToProps)(LoginContainer));
+export default withRouter(
+  connect(mapStateToProps, { authenticate })(LoginContainer)
+);

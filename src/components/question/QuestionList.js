@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -24,5 +25,9 @@ const QuestionList = ({ questions }) => (
     </table>
   </div>
 );
+
+QuestionList.propTypes = {
+  questions: PropTypes.array,
+};
 
 export default QuestionList;

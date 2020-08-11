@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { ExamList } from '../../components';
+import { ExamList, Error, Loading } from '../../components';
 import { examActions } from '../../actions';
 import { getExamList, getErrorMessage, showExamLoading } from '../../reducers';
 
@@ -16,23 +16,28 @@ class ExamListContainer extends Component {
   render() {
     const { exams, errorMessage, loading, handleDeleteExam } = this.props;
     return (
-      <ExamList
-        exams={exams}
-        onEdit={() => editExam()}
-        onDelete={handleDeleteExam}
-        errorMessage={errorMessage}
-        loading={loading}
-      />
+      <div>
+        <Error message={errorMessage} />
+        {loading ? (
+          <Loading />
+        ) : (
+          <ExamList
+            exams={exams}
+            onEdit={() => editExam()}
+            onDelete={handleDeleteExam}
+          />
+        )}
+      </div>
     );
   }
 }
 
 ExamListContainer.propTypes = {
   exams: PropTypes.array,
-  errorMessage: PropTypes.string,
-  loading: PropTypes.bool,
   handleDeleteExam: PropTypes.func,
   getExams: PropTypes.func,
+  errorMessage: PropTypes.string,
+  loading: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({

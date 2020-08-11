@@ -43,6 +43,12 @@ const exams = (state = initialState, action) => {
         inProgress: false,
       };
 
+    case types.SHOW_ERROR:
+      return {
+        ...state,
+        inProgress: false,
+      };
+
     default:
       return state;
   }

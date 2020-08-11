@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Header = ({ user, onLogout }) => (
   <div>
     <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <Link class="navbar-brand" to={'/'}>
+      <Link className="navbar-brand" to={'/'}>
         Exam App
       </Link>
       <button
@@ -28,7 +28,7 @@ const Header = ({ user, onLogout }) => (
               </Link>
             </li>
             <li className="nav-item">
-              <Link class="nav-link" to={'/examCreate'}>
+              <Link className="nav-link" to={'/examCreate'}>
                 Create Exam
               </Link>
             </li>
@@ -46,11 +46,15 @@ const Header = ({ user, onLogout }) => (
                 Profile
               </Link>
               <div className="dropdown-menu" aria-labelledby="dropdown01">
-                <Link class="dropdown-item" onClick={onLogout} to={'/Logout'}>
+                <Link
+                  className="dropdown-item"
+                  onClick={onLogout}
+                  to={'/Logout'}
+                >
                   Logout
                 </Link>
 
-                <Link class="dropdown-item">View your profile</Link>
+                <Link className="dropdown-item">View your profile</Link>
               </div>
             </li>
           </ul>
@@ -60,7 +64,7 @@ const Header = ({ user, onLogout }) => (
           <ul className="navbar-nav mr-auto">
             <li className="nav-item dropdown">
               <Link
-                class="nav-link dropdown-toggle"
+                className="nav-link dropdown-toggle"
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
@@ -69,10 +73,12 @@ const Header = ({ user, onLogout }) => (
                 Start here
               </Link>
               <div className="dropdown-menu" aria-labelledby="dropdown01">
-                <Link class="dropdown-item" to={'/Login'}>
+                <Link className="dropdown-item" to={'/Login'}>
                   Login
                 </Link>
-                <Link class="dropdown-item">Register</Link>
+                <Link className="dropdown-item" to={'/Register'}>
+                  Register
+                </Link>
               </div>
             </li>
           </ul>

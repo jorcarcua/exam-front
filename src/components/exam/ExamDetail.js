@@ -1,7 +1,8 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const ExamDetail = ({ exam, onDelete, onEdit }) => (
+const ExamDetail = ({ exam, onDelete }) => (
   <tr>
     <td>{exam.title}</td>
     <td>{exam.numberQuestions}</td>
@@ -27,5 +28,12 @@ const ExamDetail = ({ exam, onDelete, onEdit }) => (
     </td>
   </tr>
 );
+
+ExamDetail.propTypes = {
+  exam: PropTypes.object,
+  errorMessage: PropTypes.string,
+  loading: PropTypes.bool,
+  onDelete: PropTypes.func,
+};
 
 export default ExamDetail;

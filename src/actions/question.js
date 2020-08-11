@@ -29,7 +29,7 @@ export default ({ server, types, commonActions }) => {
     question,
   });
 
-  const getQuestions = (id) => async (dispatch) => {
+  const getQuestionsByExam = (id) => async (dispatch) => {
     try {
       dispatch(startAsyncQuestion());
       const res = await server._getQuestionsExam(id);
@@ -50,10 +50,11 @@ export default ({ server, types, commonActions }) => {
     }
   };
 
-  const handleEditQuestion = (question, id, history) => async (dispatch) => {
+  const handleEditQuestion = (question, history) => async (dispatch) => {
     try {
       dispatch(startAsyncQuestion());
-      const res = await server._editQuestion(question, id);
+      const { id, ...newQuestion } = question;
+      const res = await server._editQuestion(newQuestion, id);
       dispatch(editQuestion(res));
       history.push(`/questionDetail/${id}`);
     } catch (error) {
@@ -83,7 +84,7 @@ export default ({ server, types, commonActions }) => {
   };
 
   return {
-    getQuestions,
+    getQuestionsByExam,
     handleEditQuestion,
     handleAddQuestion,
     handleDeleteQuestion,

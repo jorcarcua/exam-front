@@ -1,77 +1,55 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import {
   getQuestionById,
   showQuestionLoading,
   getErrorMessage,
 } from '../../reducers';
-import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
 import { questionActions } from '../../actions';
+import { QuestionDetail, Error, Loading } from '../../components';
 
 const { handleDeleteQuestion } = questionActions;
 
-const QuestionDetailContainer = ({
-  loading,
-  question,
-  history,
-  dispatch,
-  errorMessage,
-}) => {
-  if (!question) {
-    return null;
-  }
+class QuestionDetailContainer extends Component {
+  handleDelete = (question) => {
+    const { handleDeleteQuestion, history } = this.props;
+    handleDeleteQuestion(question._id, history);
+  };
 
-  if (!loading) {
+  goBack = () => {
+    const { history, question } = this.props;
+    history.push(`/questionList/${question.exam}`);
+  };
+
+  render() {
+    const { errorMessage, loading, question } = this.props;
+    if (!question) {
+      return null;
+    }
     return (
       <div>
-        <p style={{ color: 'red' }}>{errorMessage}</p>
-        <h1 className="mb-5">Question detail</h1>
-
-        <div className="row">
-          <div className="col-sm">
-            <h3 className="mb-4">Text:</h3>
-            <p>{question.text}</p>
-          </div>
-          <div className="col-sm">
-            <h3 className="mb-4">Answers:</h3>
-            {question.answers.map((answer) => (
-              <p key={answer._id}>{answer.text}</p>
-            ))}
-          </div>
-        </div>
-
-        <Link
-          class="btn btn-primary mr-1 mt-3"
-          to={`/questionEdit/${question._id}`}
-        >
-          Edit
-        </Link>
-        <button
-          className="btn btn-primary mr-1 mt-3"
-          onClick={() => onDelete(question, history, dispatch)}
-        >
-          Delete
-        </button>
-        <button className="btn btn-primary mt-3" onClick={history.goBack}>
-          Back
-        </button>
+        <Error message={errorMessage} />
+        {loading ? (
+          <Loading />
+        ) : (
+          <QuestionDetail
+            question={question}
+            onDelete={this.handleDelete}
+            onGoBack={this.goBack}
+          />
+        )}
       </div>
     );
-  } else {
-    console.log('esperaaaa');
-    return <h3>Loading</h3>;
   }
-};
-const onDelete = async (question, history, dispatch) => {
-  await dispatch(handleDeleteQuestion(question._id, history));
-};
+}
 
 QuestionDetailContainer.propTypes = {
-  loading: PropTypes.bool,
   question: PropTypes.object,
+  handleDeleteQuestion: PropTypes.func,
   history: PropTypes.object,
-  dispatch: PropTypes.func,
+  loading: PropTypes.bool,
   errorMessage: PropTypes.string,
 };
 
@@ -81,4 +59,6 @@ const mapStateToProps = (state, { match }) => ({
   errorMessage: getErrorMessage(state),
 });
 
-export default withRouter(connect(mapStateToProps)(QuestionDetailContainer));
+export default withRouter(
+  connect(mapStateToProps, { handleDeleteQuestion })(QuestionDetailContainer)
+);

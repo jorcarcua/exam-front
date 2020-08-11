@@ -46,8 +46,6 @@ class QuestionNextContainer extends Component {
   };
 
   onChange = (id, e) => {
-    console.log('a ver el id');
-    console.log(id);
     this.setState({ selected: id });
   };
 

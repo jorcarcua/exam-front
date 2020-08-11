@@ -1,66 +1,55 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { examActions } from '../../actions';
 import { withRouter } from 'react-router-dom';
+import { examActions } from '../../actions';
+import { getErrorMessage, showExamLoading } from '../../reducers';
+import { Error, Loading, ExamForm } from '../../components';
+
+const { handleAddExam } = examActions;
 
 class ExamCreateContainer extends Component {
-  state = {
-    title: '',
+  createExam = (exam) => {
+    const { handleAddExam, history } = this.props;
+    handleAddExam(exam, history);
   };
 
-  handleChange = (e) => {
-    const text = e.target.value;
-
-    this.setState(() => ({
-      title: text,
-    }));
-  };
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const { handleAddExam } = examActions;
-    const { title } = this.state;
-    const { dispatch, id, history } = this.props;
-    const exam = {
-      id,
-      title,
-    };
-
-    dispatch(handleAddExam(exam, history));
+  goBack = () => {
+    const { history } = this.props;
+    history.goBack();
   };
 
   render() {
-    const { title } = this.state;
-    const { errorMessage, history } = this.props;
+    const { errorMessage, loading } = this.props;
     return (
       <div>
-        <p style={{ color: 'red' }}>{errorMessage}</p>
-        <form onSubmit={this.handleSubmit}>
-          <textarea
-            onChange={this.handleChange}
-            value={title}
-            placeholder="introduce text"
-            maxLength={280}
+        <Error message={errorMessage} />
+        {loading ? (
+          <Loading />
+        ) : (
+          <ExamForm
+            errorMessage={errorMessage}
+            onSubmit={this.createExam}
+            onGoBack={this.goBack}
           />
-
-          <button type="submit">Save</button>
-          <button onClick={history.goBack}>Back</button>
-        </form>
+        )}
       </div>
     );
   }
 }
 
 ExamCreateContainer.propTypes = {
-  id: PropTypes.string,
+  handleAddExam: PropTypes.func,
   errorMessage: PropTypes.string,
-  dispatch: PropTypes.func,
   history: PropTypes.object,
+  loading: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({
-  errorMessage: state.errorMessage,
+  errorMessage: getErrorMessage(state),
+  loading: showExamLoading(state),
 });
 
-export default withRouter(connect(mapStateToProps)(ExamCreateContainer));
+export default withRouter(
+  connect(mapStateToProps, { handleAddExam })(ExamCreateContainer)
+);

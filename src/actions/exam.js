@@ -48,10 +48,11 @@ export default ({ server, types, commonActions }) => {
     }
   };
 
-  const handleEditExam = (exam, id, history) => async (dispatch) => {
+  const handleEditExam = (exam, history) => async (dispatch) => {
     try {
       dispatch(startAsyncExam());
-      const res = await server._editExam(exam, id);
+      const { id, ...newExam } = exam;
+      const res = await server._editExam(newExam, id);
       dispatch(editExam(res));
       history.push(`/examList`);
     } catch (error) {

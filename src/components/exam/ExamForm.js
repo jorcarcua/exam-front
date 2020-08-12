@@ -38,12 +38,14 @@ class ExamForm extends Component {
         <form onSubmit={this.handleSubmit} className="text-left">
           <div className="form-group ">
             <label htmlFor="title">Title:</label>
-            <textarea
-              className="form-control"
-              onChange={this.handleChange}
-              value={exam.title}
-              id="title"
-            />
+            <div className="col-md-8">
+              <textarea
+                className="form-control"
+                onChange={this.handleChange}
+                value={exam.title}
+                id="title"
+              />
+            </div>
           </div>
 
           <button type="submit" className="btn btn-primary">

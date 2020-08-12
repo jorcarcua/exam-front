@@ -2,7 +2,11 @@ import React from 'react';
 
 const Error = ({ message }) => (
   <div>
-    <p style={{ color: 'red' }}>{message}</p>
+    {message && (
+      <div className="alert alert-danger" role="alert">
+        {message}
+      </div>
+    )}
   </div>
 );
 

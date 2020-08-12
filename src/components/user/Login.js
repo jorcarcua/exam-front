@@ -30,41 +30,65 @@ class Login extends Component {
   render() {
     const { user } = this.state;
     return (
-      <form className="form-signin" onSubmit={this.handleSubmit}>
-        <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label htmlFor="username" className="sr-only">
-          Username
-        </label>
-        <input
-          id="username"
-          type="text"
-          className="form-control"
-          name="username"
-          onChange={this.handleChange}
-          value={user.username}
-          placeholder="Username"
-          required
-          autoFocus
-        />
-
-        <label htmlFor="pass" className="sr-only">
-          Password
-        </label>
-        <input
-          id="pass"
-          type="password"
-          className="form-control"
-          name="password"
-          onChange={this.handleChange}
-          value={user.password}
-          placeholder="Password"
-          required
-        />
-
-        <button type="submit" className="btn btn-primary">
-          Send
-        </button>
-      </form>
+      <div className="login-form">
+        <div className="row justify-content-center">
+          <div className="col-md-8">
+            <div className="card">
+              <div className="card-header text-left">Login</div>
+              <div className="card-body">
+                <form onSubmit={this.handleSubmit}>
+                  <div className="form-group row">
+                    <label
+                      htmlFor="username"
+                      className="col-md-4 col-form-label text-md-right"
+                    >
+                      Username
+                    </label>
+                    <div className="col-md-6">
+                      <input
+                        id="username"
+                        type="text"
+                        className="form-control"
+                        name="username"
+                        onChange={this.handleChange}
+                        value={user.username}
+                        placeholder="Username"
+                        required
+                        autoFocus
+                      />
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                    <label
+                      htmlFor="pass"
+                      className="col-md-4 col-form-label text-md-right"
+                    >
+                      Password
+                    </label>
+                    <div className="col-md-6">
+                      <input
+                        id="pass"
+                        type="password"
+                        className="form-control"
+                        name="password"
+                        onChange={this.handleChange}
+                        value={user.password}
+                        placeholder="Password"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6 offset-md-3">
+                    <button type="submit" className="btn btn-primary">
+                      Send
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }

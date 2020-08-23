@@ -15,7 +15,7 @@ const _getExams = async () => {
     },
   };
 
-  const url = `${BASE_URL}/exams/`;
+  const url = `${BASE_URL}exams/`;
   const response = await fetch(url, options);
 
   if (response.ok) {

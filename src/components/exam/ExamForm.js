@@ -34,27 +34,49 @@ class ExamForm extends Component {
   render() {
     const { exam } = this.state;
     return (
-      <div>
-        <form onSubmit={this.handleSubmit} className="text-left">
-          <div className="form-group ">
-            <label htmlFor="title">Title:</label>
-            <div className="col-md-8">
-              <textarea
-                className="form-control"
-                onChange={this.handleChange}
-                value={exam.title}
-                id="title"
-              />
+      <div className="row justify-content-center">
+        <div className="col-md-8">
+          <div className="card pt-3">
+            <div>
+              <h2>Exam Form</h2>
+            </div>
+
+            <div className="card-body">
+              <form onSubmit={this.handleSubmit}>
+                <div className="form-group row">
+                  <label
+                    htmlFor="title"
+                    className="col-md-2 col-form-label text-md-right "
+                  >
+                    Title:
+                  </label>
+                  <div className="col-md-6">
+                    <input
+                      className="form-control"
+                      onChange={this.handleChange}
+                      value={exam.title}
+                      id="title"
+                    />
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <button type="submit" className="btn btn-primary btn-space">
+                    Submit
+                  </button>
+                  <button
+                    onClick={this.handleGoBack}
+                    className="btn btn-primary"
+                  >
+                    Back
+                  </button>
+                </div>
+                <div className="form-group row">
+                  <label className="col-lg-3 col-form-label form-control-label"></label>
+                </div>
+              </form>
             </div>
           </div>
-
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
-          <button onClick={this.handleGoBack} className="btn btn-primary">
-            Back
-          </button>
-        </form>
+        </div>
       </div>
     );
   }

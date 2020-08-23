@@ -25,7 +25,7 @@ const ExamList = ({ exams, onEdit, onDelete }) => (
             exam={exam}
             onEdit={onEdit}
             onDelete={() => onDelete(exam._id)}
-            key={exam.id}
+            key={exam._id}
           />
         ))}
       </tbody>

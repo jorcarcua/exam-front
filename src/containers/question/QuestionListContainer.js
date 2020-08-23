@@ -28,14 +28,14 @@ class QuestionListContainer extends Component {
         ) : (
           <div>
             <QuestionList questions={questions} />
-            <Link class="btn btn-primary" to={'/'}>
-              Back
-            </Link>{' '}
             <Link
               class="btn btn-primary"
               to={`/questionCreate/${match.params.examId}`}
             >
               Add Question
+            </Link>{' '}
+            <Link class="btn btn-primary" to={'/'}>
+              Back
             </Link>{' '}
           </div>
         )}

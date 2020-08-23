@@ -16,7 +16,9 @@ const ExamDetail = ({ exam, onDelete }) => (
     </td>
     <td>
       {' '}
-      <Link onClick={onDelete}>Eliminar</Link>
+      <Link to={'#'} onClick={onDelete}>
+        Eliminar
+      </Link>
     </td>
     <td>
       {' '}

@@ -10,7 +10,7 @@ const ExamList = ({ exams, onEdit, onDelete }) => (
       <thead>
         <tr>
           <th>Title</th>
-          <th>Number Of Questions</th>
+          <th>Number Questions</th>
           <th>List Questions</th>
           <th>Edit</th>
           <th>Delete</th>

@@ -5,7 +5,7 @@ import { createMemoryHistory } from 'history';
 import * as types from '../../constants/actionTypes';
 import { examActions } from '../../actions';
 
-const BASE_URL = 'http://localhost:3001/v1/';
+const BASE_URL = process.env.REACT_APP_SERVER;
 
 const initialState = {
   list: [],

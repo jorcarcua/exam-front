@@ -42,7 +42,7 @@ class Login extends Component {
                       htmlFor="username"
                       className="col-md-4 col-form-label text-md-right"
                     >
-                      Username
+                      Usernames
                     </label>
                     <div className="col-md-6">
                       <input

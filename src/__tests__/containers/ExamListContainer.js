@@ -3,7 +3,7 @@ import { render, fireEvent, screen } from '../../../test-utils';
 import ExamListContainer from '../../containers/exam/ExamListContainer';
 import fetchMock from 'fetch-mock';
 
-const BASE_URL = 'http://localhost:3001/v1/';
+const BASE_URL = process.env.REACT_APP_SERVER;
 
 const initialState = {
   list: [
